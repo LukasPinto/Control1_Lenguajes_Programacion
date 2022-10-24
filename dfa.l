@@ -16,7 +16,7 @@
 "tran" { yylval.sval = strdup(yytext);return TRAN ;}
 "(" { return AP; }
 (\,*[A-Za-z]+)+ { yylval.sval = strdup(yytext); return CONT_ALF; }
-(,*\([A-Za-z]+\,[A-Za-z]+\,[A-Za-z]+\))+ { yylval.sval = strdup(yytext);return CONT_TRAN; }
+(,*\([A-Za-z]+[0-9]*\,[A-Za-z]+\,[A-Za-z]+[0-9]*\))+ { yylval.sval = strdup(yytext);return CONT_TRAN; }
 ")" { return CP; }
 \n	{ return FINLINEA; }
 [ \t]   { /*ignoramos en este caso*/ } 
