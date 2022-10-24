@@ -1,0 +1,4 @@
+le tuve que quitar la flag -ll la compilacion con gcc
+
+y ademas tuve que añadir la linea  %option noyywrap
+al principio del archivo calc_token.l
