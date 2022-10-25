@@ -1,13 +1,11 @@
 
 %{
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <iostream>
 //#include "dfa_token.tab.h"
 //#define YYSTYPE char * no colocar el define yyystype por que abajo en %union lo estoy definiendo
 //#define YYSTYPE char *
+using namespace std;
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -43,8 +41,8 @@ func    : ALFABETO AP content
         | TRAN AP content
         ;
 
-content : CONT_ALF { printf("el contenido es : %s\n",$1); }
-        | CONT_TRAN { printf("el contenido es : %s\n",$1); }
+content : CONT_ALF { cout << "el contenido es: "<<$1<<endl; }
+        | CONT_TRAN { cout << "el contenido es: "<<$1<<endl; }
         | content CP
         ;
 

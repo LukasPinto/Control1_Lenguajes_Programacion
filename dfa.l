@@ -4,8 +4,7 @@
 #include "dfa_token.tab.h"
 //extern int yylval;
 //#define YYSTYPE char *
-#include <string.h>
-#include <stdlib.h>
+
 %}
 
 %option noyywrap  
