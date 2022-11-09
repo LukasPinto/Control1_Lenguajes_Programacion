@@ -47,12 +47,12 @@ func    : ALFABETO AP content
         | FINAL AP nodo
         ;
 
-nodo    : ESTADO  { cout << "el contenido es : " << $1 <<endl;return 0;}
+nodo    : ESTADO  { cout << "el contenido es : " << $1 <<endl;}
         | nodo CP
         ;
 
-content : CONT_ALF { cout << "el contenido es: "<<$1<<endl;aux=$1; return 0;}
-        | CONT_TRAN { cout << "el contenido es: "<<$1<<endl;return 0;}
+content : CONT_ALF { cout << "el contenido es: "<<$1<<endl;aux=$1;}
+        | CONT_TRAN { cout << "el contenido es: "<<$1<<endl;}
         | content CP
         ;
 
