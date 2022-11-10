@@ -185,6 +185,41 @@ void limpiar_estados(string cadena){
   } 
 }
 
+//funcion para asignar un estado a final
+string asignar_terminal(string estado){
+    
+    if(verificar_estado(estado)){
+      for (size_t i =0; i<estados.size();i++){
+        if(estados[i][0] == estado){
+          estados[i][1] = "terminal";
+          return "Se seteo "+estados[i][0]+" a "+estados[i][1];
+        }
+      }
+    }
+    return "Error al setear el estado, no existe";
+
+}
+
+//Se limpiar el antiguo estados inicial y se asigna al nuevo
+string asignar_incial(string estado){
+    //Se eliminan el anterior estado incial y se deja como normal
+    if(verificar_estado(estado)){
+      for (size_t i =0; i<estados.size();i++){
+        if(estados[i][1] == "inicial"){
+          estados[i][1] = "normal";
+        }
+      }
+      for (size_t i=0; i<estados.size(); i++){
+        if(estados[i][0] == estado){
+          estados[i][1] = "inicial";
+          return "Se seteo "+estados[i][0]+" a "+estados[i][1];
+        }
+      }
+    }
+    return "Error al setear el estado, no existe";
+
+}
+
 %} 
 
 %union {
@@ -202,8 +237,7 @@ void limpiar_estados(string cadena){
 %token <sval> CONT_TRAN
 %token <sval> CONT_INPUT
 %token <sval> TRAN
-%token <sval> CONT_ESTADOS
-%token <sval> ESTADO
+
 %%
 
 input   : /* empty string */
@@ -216,19 +250,21 @@ linea   : FINLINEA
 
 func    : ALFABETO AP content
         | TRAN AP content
-        | INICIAL AP nodo
-        | FINAL AP nodo
+        | INICIAL AP nodo_inicial
+        | FINAL AP nodo_final
         | LEER AP content
-        | ESTADOS AP transiciones
+        | ESTADOS AP estado
         ;
 
-nodo    : ESTADO  { cout << "el contenido es : " << $1 <<endl;}
-        | nodo CP
-        ;
+nodo_final  : CONT_INPUT  { cadena = $1;cout << "estado final  : " << asignar_terminal(cadena)<<endl;}
+            | nodo_final CP
+            ;
+nodo_inicial : CONT_INPUT { cadena =$1;cout << "estado incial : " <<asignar_incial(cadena) << endl;iniciar_automata();}
+             | nodo_inicial CP
+             ;
 
-transiciones  : CONT_ESTADOS { cout << "el contenido ess: " << $1<<endl;cadena = $1;limpiar_estados(cadena);}
-
-            | transiciones CP
+estado  : CONT_INPUT { cout << "el contenido ess: " << $1<<endl;cadena = $1;limpiar_estados(cadena);}
+            | estado CP
             ;
 
 content : CONT_ALF { cout << "el contenido es: "<<$1<<endl;aux=$1;}

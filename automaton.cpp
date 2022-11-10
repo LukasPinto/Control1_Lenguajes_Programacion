@@ -100,14 +100,49 @@ string agregar_estado(vector<string> estado){
     estados.push_back(estado);
     return "funcionó";
 }
+//funcion para asignar un estado a final
+string asignar_terminal(string estado){
+    
+    if(verificar_estado(estado)){
+      for (size_t i =0; i<estados.size();i++){
+        if(estados[i][0] == estado){
+          estados[i][1] = "terminal";
+          return "Se seteo "+estados[i][0]+" a "+estados[i][1];
+        }
+      }
+    }
+    return "Error al setear el estado, no existe";
 
+}
+//Se limpiar el antiguo estados inicial y se asigna al nuevo
+string asignar_incial(string estado){
+    //Se eliminan el anterior estado incial y se deja como normal
+    if(verificar_estado(estado)){
+      for (size_t i =0; i<estados.size();i++){
+        if(estados[i][1] == "inicial"){
+          estados[i][1] = "normal";
+        }
+      }
+      for (size_t i=0; i<estados.size(); i++){
+        if(estados[i][0] == estado){
+          estados[i][1] = "inicial";
+          return "Se seteo "+estados[i][0]+" a "+estados[i][1];
+        }
+      }
+    }
+    return "Error al setear el estado, no existe";
+
+}
 
 int main(int argc, char const *argv[])
 {
-    string cadena = "abaaaaaaaa";
+    string cadena = "ba";
     string aux; 
     iniciar_automata();
-
+    //cout << asignar_terminal("Q2") << endl;
+    
+    cout << asignar_incial("Q2") << endl;
+    iniciar_automata(); //recordar utilizar el iniciar_automata() para setear de nuevo el estado inicial
     for(size_t i=0; i < cadena.length(); i++){
         aux = cadena[i];
         if(leer_cadena(aux)){
