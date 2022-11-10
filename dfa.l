@@ -16,12 +16,15 @@
 "final" { return FINAL;}
 "leer" { return LEER;}
 "estados" { return ESTADOS;}
+"mostrar_tran" { return MOSTRAR_TRAN;}
+"mostrar_act" { return MOSTRAR_ACT;}
+"mostrar_est" { return MOSTRAR_EST;}
+"mostrar_alf" { return MOSTRAR_ALF;}
 \= { return IGUAL;}
 "alfabeto" { yylval.sval = strdup(yytext);return ALFABETO;}
 "tran" { yylval.sval = strdup(yytext);return TRAN ;}
 "{" { return AP; }
 (,*[A-Za-z0-9]+)+ { yylval.sval = strdup(yytext);return CONT_INPUT;}
-(\,*[A-Za-z]+)+ { yylval.sval = strdup(yytext); return CONT_ALF; }
 (,*\([A-Za-z]+[0-9]*\,[A-Za-z]+\,[A-Za-z]+[0-9]*\))+ { yylval.sval = strdup(yytext);return CONT_TRAN; }
 "}" { return CP; }
 \n	{ return FINLINEA; }

@@ -24,6 +24,7 @@ string aux="";
 
 //arrays de estados
 //vector<string> estado = {"Q2", "normal"};
+vector <string> alfabeto; 
 vector <string> estado;
 //vector<vector<string>> estados = {{"Q1", "inicial"}, {"Q2", "normal"},  {"Q3", "terminal"}};
 vector <vector<string>> estados;
@@ -222,6 +223,80 @@ string asignar_incial(string estado){
 
 }
 
+
+vector<string> asignar_alfabeto(string cadena){
+  cout << cadena << endl;
+  vector<string> alf_auxiliar;
+  string aux;
+  string token;
+  stringstream ss(cadena);
+  while (getline(ss,token,',')){
+    alf_auxiliar.push_back(token);
+  }
+  return alf_auxiliar;
+
+  
+}
+
+void mostrar_transicion(){
+  if(transiciones.size()){
+    cout <<"Los valores de las transiciones son: "<<endl;
+    for( size_t i = 0 ; i<transiciones.size();i++){
+      cout <<"("<< transiciones[i][0] << ","<< transiciones[i][1]<<","<<transiciones[i][2]<<")"<<endl;
+    }
+  }
+  else {
+  
+  cout << "No existen transiciones" << endl;
+
+  }
+
+}
+
+void mostrar_estado_actual(){
+  //modificar esto si se modifica lo del estado inicial y final a la vez
+  cout<<"\nEl valor del estado actual es : "<<endl;
+  cout<<"("<< estado_actual[0] << "," << estado_actual[1]<<")"<<endl;
+}
+void mostrar_estados(){
+  if(estados.size()){
+    cout << "El conjunto de estados son : " << endl;
+    for ( size_t i =0 ; i < estados.size() ; i++){
+      cout << "(" << estados[i][0] <<","<<estados[i][1] << ")" <<endl;
+    }
+  }
+  else{
+    cout << "No se han definido estados." << endl;
+  }
+
+}
+
+void mostrar_alfabeto(){
+  if(alfabeto.size()){
+    cout << "El alfabeto es : "<<endl;
+    for (size_t i =0 ; i < alfabeto.size();i++){
+      if (i==alfabeto.size()-1){
+        cout << alfabeto[i]<<endl;
+      }
+      else{
+        cout << alfabeto[i]<<",";
+
+      }
+          }
+  }
+  else{
+  cout << "El alfabeto está vacío "<<endl;
+  }
+  
+
+}
+
+void mostrar_todo(){
+  mostrar_alfabeto();
+  mostrar_estados();
+  mostrar_transicion();
+  mostrar_estado_actual();
+}
 %} 
 
 %union {
@@ -232,14 +307,12 @@ string asignar_incial(string estado){
 /* declaramos los tokens */
 //%token NUMERO
 //%token SUMA RESTA MULTIPLICA DIVIDE ABS
-%token AP CP FINLINEA COMA INICIAL IGUAL FINAL ESTADOS
-%token <sval> CONT_ALF
+%token AP CP FINLINEA COMA INICIAL IGUAL FINAL ESTADOS MOSTRAR_TRAN MOSTRAR_ACT MOSTRAR_EST MOSTRAR_ALF
 %token <sval> ALFABETO
 %token <sval> LEER
 %token <sval> CONT_TRAN
 %token <sval> CONT_INPUT
 %token <sval> TRAN
-
 %%
 
 input   : /* empty string */
@@ -250,13 +323,25 @@ linea   : FINLINEA
         | func FINLINEA
         ;
 
-func    : ALFABETO AP content
+func    : ALFABETO AP content_alf
         | TRAN AP content
         | INICIAL AP nodo_inicial
         | FINAL AP nodo_final
         | LEER AP content
         | ESTADOS AP estado
+        | MOSTRAR_TRAN AP mostrar_tran
+        | MOSTRAR_ACT AP mostrar_act
+        | MOSTRAR_EST AP mostrar_est
+        | MOSTRAR_ALF AP mostrar_alf
         ;
+
+mostrar_alf : CP { mostrar_alfabeto();}
+mostrar_est : CP { mostrar_estados();}
+
+mostrar_tran  : CP { mostrar_transicion(); }
+              ;
+mostrar_act : CP { mostrar_estado_actual();}
+            ;
 
 nodo_final  : CONT_INPUT  { cadena = $1;cout << "estado final  : " << asignar_terminal(cadena)<<endl;}
             | nodo_final CP
@@ -268,9 +353,11 @@ nodo_inicial : CONT_INPUT { cadena =$1;cout << "estado incial : " <<asignar_inci
 estado  : CONT_INPUT { cout << "el contenido ess: " << $1<<endl;cadena = $1;limpiar_estados(cadena);}
             | estado CP
             ;
+content_alf : CONT_INPUT { cadena = $1;alfabeto = asignar_alfabeto(cadena);}
+            | content_alf CP
+            ;
 
-content : CONT_ALF { cout << "el contenido es: "<<$1<<endl;aux=$1;}
-        | CONT_TRAN { cout << "el contenido es: "<<$1<<endl;cadena = $1;limpiar_transiciones(cadena);}
+content : CONT_TRAN { cout << "el contenido es: "<<$1<<endl;cadena = $1;limpiar_transiciones(cadena);}
         | CONT_INPUT { cadena = $1;iniciar_automata();
         string aux;
         for (size_t i = 0;i<cadena.length();i++){
