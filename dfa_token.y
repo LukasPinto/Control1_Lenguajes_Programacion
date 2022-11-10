@@ -39,6 +39,7 @@ string cadena;
 void iniciar_automata(){
     for(size_t i=0; i< estados.size(); i++){
         if(estados[i][1] == "inicial"){
+            estado_actual.clear();
             estado_actual = estados[i];
             cout <<  estado_actual[0] << endl;
             return ;
@@ -52,10 +53,13 @@ void iniciar_automata(){
 //testear caracter por caracter el automata
 bool leer_cadena(string cadena){
     for(size_t i=0; i< transiciones.size(); i++){
+        cout<<"sdfadfsadf"<<endl;
+        cout << estado_actual[0]<<" "<<transiciones[i][0]<<" "<<cadena<<" "<<transiciones[i][1]<<endl; 
         if(estado_actual[0] == transiciones[i][0] && cadena == transiciones[i][1]){
             //buscar el estado de llegada 
-            for(int j=0; j< estados.size(); j++){
+            for(size_t j=0; j< estados.size(); j++){
                 if(transiciones[i][2] == estados[j][0]){
+                    estado_actual.clear();
                     estado_actual = estados[j];
                     return 1 /*el caracter pertenece*/;
                 }
@@ -67,7 +71,7 @@ bool leer_cadena(string cadena){
 }
 
 string es_terminal(vector <string> estado_actual){
-    if(estado_actual[1]=="terminal"){
+    if(estado_actual[estado_actual.size()-1]=="terminal"){
         return "el ultimo estado es terminal";
     }
     return "el ultimo estado no es terminal";
@@ -140,16 +144,16 @@ void limpiar_transiciones(string cadena){
   size_t pos = 0;
   while (( pos = cadena.find (delim)) != string::npos)  
   {  
-  token = cadena.substr(0, pos); // store the substring   
-  aux = token;
-  aux.erase(remove(aux.begin(), aux.end(), ')'), aux.end());
+    token = cadena.substr(0, pos); // store the substring   
+    aux = token;
+    aux.erase(remove(aux.begin(), aux.end(), ')'), aux.end());
 
-  aux.erase(remove(aux.begin(), aux.end(), '('), aux.end());
-  trans.push_back(aux);
-  cadena.erase(0, pos + delim.length());  /* erase() function store the current positon and move to next token. */   
+    aux.erase(remove(aux.begin(), aux.end(), '('), aux.end());
+    trans.push_back(aux);
+    cadena.erase(0, pos + delim.length());  /* erase() function store the current positon and move to next token. */   
   }
   cadena.erase(remove(cadena.begin(), cadena.end(), ')'), cadena.end());
-
+  cadena.erase(remove(cadena.begin(), cadena.end(), '('), cadena.end());
   trans.push_back(cadena);
 
   for(size_t i=0;i <trans.size();i++){
@@ -194,6 +198,10 @@ string asignar_terminal(string estado){
     if(verificar_estado(estado)){
       for (size_t i =0; i<estados.size();i++){
         if(estados[i][0] == estado){
+          if(estados[i][1] == "inicial"){
+            estados[i].push_back("terminal");
+            return "Se seteo"+ estados[i][0]+ " a "+estados[i][2];
+          }
           estados[i][1] = "terminal";
           return "Se seteo "+estados[i][0]+" a "+estados[i][1];
         }
@@ -256,13 +264,31 @@ void mostrar_transicion(){
 void mostrar_estado_actual(){
   //modificar esto si se modifica lo del estado inicial y final a la vez
   cout<<"\nEl valor del estado actual es : "<<endl;
-  cout<<"("<< estado_actual[0] << "," << estado_actual[1]<<")"<<endl;
+  cout << "(";
+  for ( size_t i = 0 ;i < estado_actual.size();i++){
+    if(estado_actual.size()-1 == i){
+      cout << estado_actual[i]<<")"<<endl;
+    }
+    else{
+      cout << estado_actual[i]<<",";
+    }
+  }
+  
 }
 void mostrar_estados(){
   if(estados.size()){
     cout << "El conjunto de estados son : " << endl;
     for ( size_t i =0 ; i < estados.size() ; i++){
-      cout << "(" << estados[i][0] <<","<<estados[i][1] << ")" <<endl;
+      cout << "(";
+      for (size_t j =0 ;j < estados[i].size();j++){
+        if (estados[i].size()-1 == j){
+          cout << estados[i][j];
+        }
+        else{
+          cout << estados[i][j]<<",";
+        }
+      }
+      cout<<")"<<endl;
     }
   }
   else{

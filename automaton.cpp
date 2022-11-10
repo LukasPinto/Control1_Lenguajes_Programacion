@@ -6,7 +6,7 @@ using namespace std;
 
 //arrays de estados
 vector<string> estado = {"Q2", "normal"};
-vector<vector<string>> estados = {{"Q1", "inicial"}, {"Q2", "normal"},  {"Q3", "terminal"}};
+vector<vector<string>> estados = {{"Q1", "inicial","terminal"}, {"Q2", "normal",},  {"Q3", "terminal"}};
 
 //array de transiciones
 vector<string> transicion = {"Q1", "a", "Q2"}; 
@@ -42,7 +42,8 @@ bool leer_cadena(string cadena){
 }
 
 string es_terminal(vector <string> estado_actual){
-    if(estado_actual[1]=="terminal"){
+    
+    if(estado_actual[estado_actual.size()-1]=="terminal"){
         return "el ultimo estado es terminal";
     }
     return "el ultimo estado no es terminal";
@@ -136,7 +137,7 @@ string asignar_incial(string estado){
 
 int main(int argc, char const *argv[])
 {
-    string cadena = "abaaaa";
+    string cadena = "";
     string aux; 
     iniciar_automata();
     //cout << asignar_terminal("Q2") << endl;
