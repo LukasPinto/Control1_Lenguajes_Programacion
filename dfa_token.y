@@ -23,11 +23,13 @@ string aux="";
 
 
 //arrays de estados
-vector<string> estado = {"Q2", "normal"};
+//vector<string> estado = {"Q2", "normal"};
+vector <string> estado;
 //vector<vector<string>> estados = {{"Q1", "inicial"}, {"Q2", "normal"},  {"Q3", "terminal"}};
-vector<vector<string>> estados;
+vector <vector<string>> estados;
 //array de transiciones
-vector<string> transicion = {"Q1", "a", "Q2"}; 
+//vector<string> transicion = {"Q1", "a", "Q2"};
+vector <string> transicion;
 //vector<vector<string>> transiciones = {{"Q1", "a", "Q2"}, {"Q2", "b", "Q3"}, {"Q3", "a", "Q3"}};
 vector<vector<string>> transiciones; 
 //estado actual 
@@ -51,7 +53,7 @@ bool leer_cadena(string cadena){
     for(size_t i=0; i< transiciones.size(); i++){
         if(estado_actual[0] == transiciones[i][0] && cadena == transiciones[i][1]){
             //buscar el estado de llegada 
-            for(int j=0; i< estados.size(); j++){
+            for(int j=0; j< estados.size(); j++){
                 if(transiciones[i][2] == estados[j][0]){
                     estado_actual = estados[j];
                     return 1 /*el caracter pertenece*/;
@@ -282,6 +284,7 @@ content : CONT_ALF { cout << "el contenido es: "<<$1<<endl;aux=$1;}
           }
         }
         cout << es_terminal(estado_actual) << endl; 
+        iniciar_automata();
 }
         | content CP
         ;

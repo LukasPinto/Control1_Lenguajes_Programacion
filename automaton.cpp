@@ -136,13 +136,13 @@ string asignar_incial(string estado){
 
 int main(int argc, char const *argv[])
 {
-    string cadena = "ba";
+    string cadena = "abaaaa";
     string aux; 
     iniciar_automata();
     //cout << asignar_terminal("Q2") << endl;
     
-    cout << asignar_incial("Q2") << endl;
-    iniciar_automata(); //recordar utilizar el iniciar_automata() para setear de nuevo el estado inicial
+    //cout << asignar_incial("Q2") << endl;
+    //iniciar_automata(); //recordar utilizar el iniciar_automata() para setear de nuevo el estado inicial
     for(size_t i=0; i < cadena.length(); i++){
         aux = cadena[i];
         if(leer_cadena(aux)){
