@@ -15,6 +15,7 @@
 "inicial" { return INICIAL;}
 "final" { return FINAL;}
 "leer" { return LEER;}
+"estados" { return ESTADOS;}
 \= { return IGUAL;}
 "alfabeto" { yylval.sval = strdup(yytext);return ALFABETO;}
 "tran" { yylval.sval = strdup(yytext);return TRAN ;}
@@ -23,6 +24,7 @@
 ([A-Za-z]+[0-9]*) { yylval.sval = strdup(yytext);return ESTADO;}
 (\,*[A-Za-z]+)+ { yylval.sval = strdup(yytext); return CONT_ALF; }
 (,*\([A-Za-z]+[0-9]*\,[A-Za-z]+\,[A-Za-z]+[0-9]*\))+ { yylval.sval = strdup(yytext);return CONT_TRAN; }
+(,*[A-Za-z0-9]+)+ { yylval.sval = strdup(yytext);return CONT_ESTADOS;}
 "}" { return CP; }
 \n	{ return FINLINEA; }
 
