@@ -139,9 +139,9 @@ void limpiar_transiciones(string cadena){
   {  
   token = cadena.substr(0, pos); // store the substring   
   aux = token;
-   aux.erase(remove(aux.begin(), aux.end(), ')'), aux.end());
+  aux.erase(remove(aux.begin(), aux.end(), ')'), aux.end());
 
-   aux.erase(remove(aux.begin(), aux.end(), '('), aux.end());
+  aux.erase(remove(aux.begin(), aux.end(), '('), aux.end());
   trans.push_back(aux);
   cadena.erase(0, pos + delim.length());  /* erase() function store the current positon and move to next token. */   
   }
@@ -269,7 +269,20 @@ estado  : CONT_INPUT { cout << "el contenido ess: " << $1<<endl;cadena = $1;limp
 
 content : CONT_ALF { cout << "el contenido es: "<<$1<<endl;aux=$1;}
         | CONT_TRAN { cout << "el contenido es: "<<$1<<endl;cadena = $1;limpiar_transiciones(cadena);}
-        | CONT_INPUT { iniciar_automata();}
+        | CONT_INPUT { cadena = $1;iniciar_automata();
+        string aux;
+        for (size_t i = 0;i<cadena.length();i++){
+          aux = cadena[i];
+          if(leer_cadena(aux)){
+            cout << "el caracter "<< aux <<" pertenece al lenguaje" << endl;
+          }else{
+            cout << "el caracter "<< aux <<" no pertenece al lenguaje, la cadena no pertenece al lenguaje" << endl;
+            estado_actual = {"Q0","normal"};
+            break;
+          }
+        }
+        cout << es_terminal(estado_actual) << endl; 
+}
         | content CP
         ;
 
@@ -281,5 +294,12 @@ main(int argc, char **argv){
   yyparse();
   cout << aux<<endl;
 }
-
+/* 
+inputs de ej:
+  estados{q1,q2,q3}
+  inicial{q1}
+  final{q3}
+  tran{(q1,a,q2),(q2,b,q3),(q3,a,q3)}
+  leer{abaa}
+*/
 
