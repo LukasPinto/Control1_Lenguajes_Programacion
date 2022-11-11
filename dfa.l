@@ -3,6 +3,7 @@
 %{
 //#include "calc_token.tab.h"
 #include "dfa_token.tab.h"
+#include "iostream"
 //extern int yylval;
 //#define YYSTYPE char *
 
@@ -30,7 +31,7 @@
 \n	{ return FINLINEA; }
 
 [ \t]   { /*ignoramos en este caso*/ } 
-. 	{ printf("OTRO CARACTER %s \n", *yytext); }
+. 	{ std::cout << "OTRO CARACTER "<<*yytext<<std::endl; }
 %%
 /*main(int argc, char **argv) {
   int tok;

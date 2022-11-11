@@ -41,7 +41,6 @@ void iniciar_automata(){
         if(estados[i][1] == "inicial"){
             estado_actual.clear();
             estado_actual = estados[i];
-            cout <<  estado_actual[0] << endl;
             return ;
         }
     }
@@ -53,8 +52,6 @@ void iniciar_automata(){
 //testear caracter por caracter el automata
 bool leer_cadena(string cadena){
     for(size_t i=0; i< transiciones.size(); i++){
-        cout<<"sdfadfsadf"<<endl;
-        cout << estado_actual[0]<<" "<<transiciones[i][0]<<" "<<cadena<<" "<<transiciones[i][1]<<endl; 
         if(estado_actual[0] == transiciones[i][0] && cadena == transiciones[i][1]){
             //buscar el estado de llegada 
             for(size_t j=0; j< estados.size(); j++){
@@ -77,6 +74,20 @@ string es_terminal(vector <string> estado_actual){
     return "el ultimo estado no es terminal";
 }
 
+//Funcion para verificar si un caracter existe en el alfabeto
+bool verificar_alfabeto(string caracter){
+  
+  for( size_t i = 0 ;i < alfabeto.size();i++){
+    if ( caracter == alfabeto[i]){
+    return 1;
+    }
+  }
+
+  cout << "El caracter "<<caracter<<endl; 
+  return 0;
+
+}
+
 //verificar si existe el estado 
 //devuelve true si el estado existe 
 bool verificar_estado(string estado){
@@ -88,20 +99,19 @@ bool verificar_estado(string estado){
     return false; 
 }
 
-string agregar_transicion(vector<string> transicion){
+bool agregar_transicion(vector<string> transicion){
 
     //validar que los estado existen. 
-    if(verificar_estado(transicion[0])){
-        if(verificar_estado(transicion[2])){
+    if(verificar_estado(transicion[0]) && verificar_estado(transicion[2]) && verificar_alfabeto(transicion[1])){
             transiciones.push_back(transicion);
-            return "la transición fue agregada con existo";
-        }
+            return 1;
     }
 
 
-    return "uno de los estados de la transición no existe";
+    return 0;
     
 }
+
 
 string agregar_estado(vector<string> estado){
     vector<string> tipos = {"inicial", "termianl", "normal"};
@@ -164,7 +174,15 @@ void limpiar_transiciones(string cadena){
       aux2=token;
         result.push_back(aux2);
         }
-    transiciones.push_back(result);
+    
+    if(agregar_transicion(result)){
+      cout << "Transicion ("<<result[0]<<","<<result[1]<<","<<result[2]<<") agregada con existo "<<endl;
+
+    }
+    else{
+      cout << "No se pudo agregar la transicion : ("<<result[0]<<","<<result[1]<<","<<result[2]<<")"<<endl; 
+
+    }
     result.clear();
      
   }
@@ -404,12 +422,11 @@ content : CONT_TRAN { cout << "el contenido es: "<<$1<<endl;cadena = $1;limpiar_
 
 %%
 
-main(int argc, char **argv){
+int main(int argc, char const *argv[]){
   printf("\nIngresa una funcion\n");
   yyin = stdin;
   yyparse();
-  cout << aux<<endl;
-}
+  }
 /* 
 inputs de ej:
   estados{q1,q2,q3}
